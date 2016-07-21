@@ -7,7 +7,13 @@ var userInfo = {
 };
 
 app.use(function (req, res) {
-	userInfo.ip_address = req.ip;
+	
+	var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+     
+	userInfo.ip_address = ip;
 	userInfo.language = req.headers["accept-language"];
 	userInfo.software = req.headers["user-agent"];
 
